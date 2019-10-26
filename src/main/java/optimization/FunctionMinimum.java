@@ -1,10 +1,26 @@
 package optimization;
 
-import javafx.util.Pair;
-
 import java.util.function.DoubleFunction;
 
 import static java.lang.Math.*;
+
+class Pair<T, R> {
+    T key;
+    R value;
+
+    public Pair(T key, R value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public T getKey() {
+        return key;
+    }
+
+    public R getValue() {
+        return value;
+    }
+}
 
 public class FunctionMinimum {
 
@@ -35,11 +51,10 @@ public class FunctionMinimum {
             prevMinX = minX;
             parabolaMin = getParabolaMin(func, x1, x2, x3);
             minX = parabolaMin.getKey();
-            if (minX >= x2){
+            if (minX >= x2) {
                 x1 = x2;
                 x2 = minX;
-            }
-            else {
+            } else {
                 x3 = x2;
                 x2 = minX;
             }
@@ -55,13 +70,15 @@ public class FunctionMinimum {
         double a = ((x3 - x2) * y1 - (x3 - x1) * y2 + (x2 - x1) * y3) / delta;
         double b = (-(x3 * x3 - x2 * x2) * y1 + (x3 * x3 - x1 * x1) * y2 - (x2 * x2 - x1 * x1) * y3) / delta;
         double c = (x2 * x3 * (x3 - x2) * y1 - x1 * x3 * (x3 - x1) * y2 + x1 * x2 * (x2 - x1) * y3) / delta;
-        return new Pair<>(-b/(2*a), - b*b/(4*a) + c);
+        return new Pair<>(-b / (2 * a), -b * b / (4 * a) + c);
     }
 
     public static void main(String[] args) {
         Pair<Double, Double> minimumGoldenRatio = findMinGoldenRatio((x) -> log(1 + x * x) - sin(x), 0, PI / 4, 0.001);
+        System.out.println("Метод золотого сечения: ");
         System.out.println("MinX = " + minimumGoldenRatio.getKey() + "; MinY = " + minimumGoldenRatio.getValue());
         Pair<Double, Double> minimumParabola = findMinParabola((x) -> log(1 + x * x) - sin(x), 0, PI / 4, 0.001);
+        System.out.println("\nМетод парабол: ");
         System.out.println("MinX = " + minimumParabola.getKey() + "; MinY = " + minimumParabola.getValue());
     }
 
